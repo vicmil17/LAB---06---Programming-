@@ -42,6 +42,7 @@ for i in range(len(data)):
         countries_over_80.append(data["Country Name"][i])
 print("Number of countries where women live more than 80 years:", len(countries_over_80))
 print("Countries:", countries_over_80)
+
 # ----------------------------------------------------------
 #Part 4 - Visualizing statistical relationships
 # ----------------------------------------------------------
@@ -76,4 +77,105 @@ plt.ylabel("Life Expectancy (Male, years)")
 plt.grid(True)
 plt.show()
 
+# ----------------------------------------------------------
+#Step 1: relplot() with color by Region
+# ----------------------------------------------------------
+# Female life expectancy by region
+sns.relplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, female",
+    hue="Region",             # color-coded by region
+    kind="scatter",
+    height=5,
+    aspect=1.3)
+plt.title("GNI per Capita vs Life expectancy, female by Region")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Female, years)")
+plt.grid(True)
+plt.show()
 
+# Male life expancy by region 
+sns.relplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, male",
+    hue="Region",
+    kind="scatter",
+    height=5,
+    aspect=1.3)
+plt.title("GNI per Capita vs Life expectancy, male by Region")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Male, years)")
+plt.grid(True)
+plt.show()
+
+# ----------------------------------------------------------
+#Step 2: relplot() with Lines and Standard Deviation
+# ----------------------------------------------------------
+#For women
+sns.relplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, female",
+    hue="Region",
+    kind="line",
+    ci="sd",        # show standard deviation as shaded area
+    height=5,
+    aspect=1.3)
+plt.title("GNI per Capita vs Life expectancy, female by Region — Line + SD")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Female, years)")
+plt.grid(True)
+plt.show()
+
+#For men 
+sns.relplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, male",
+    hue="Region",
+    kind="line",
+    ci="sd",
+    height=5,
+    aspect=1.3)
+plt.title("GNI per Capita vs Life expectancy, male by Region — Line + SD")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Male, years)")
+plt.grid(True)
+plt.show()
+# ----------------------------------------------------------
+#lmplot() — Linear Regression per Region
+# ----------------------------------------------------------
+#for women 
+sns.lmplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, female",
+    hue="Region",
+    height=5,
+    aspect=1.3,
+    scatter_kws={"alpha":0.6})
+plt.title("Linear Regression: GNI per Capita vs Life expectancy, female by Region")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Female, years)")
+plt.grid(True)
+plt.show()
+
+#for men
+sns.lmplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, male",
+    hue="Region",
+    height=5,
+    aspect=1.3,
+    scatter_kws={"alpha":0.6})
+plt.title("Linear Regression: GNI per Capita vs Life expectancy, male by Region")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Male, years)")
+plt.grid(True)
+plt.show()
+
+#This part explores the relationship between a country's income level,
+#(GNI per capita) and life expectancy, with separate plots for men and women.
