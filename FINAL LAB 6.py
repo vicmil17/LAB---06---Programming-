@@ -42,6 +42,38 @@ for i in range(len(data)):
         countries_over_80.append(data["Country Name"][i])
 print("Number of countries where women live more than 80 years:", len(countries_over_80))
 print("Countries:", countries_over_80)
+# ----------------------------------------------------------
+#Part 4 - Visualizing statistical relationships
+# ----------------------------------------------------------
 
+import matplotlib.pyplot as plt
+
+# Scatter plot for females
+sns.relplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, female",
+    kind="scatter",
+    height=5,
+    aspect=1.3)
+plt.title("GNI per Capita vs Life expectancy, female")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Female, years)")
+plt.grid(True)
+plt.show()
+
+# Scatter plot for males
+sns.relplot(
+    data=data,
+    x="GNI per capita",
+    y="Life expectancy, male",
+    kind="scatter",
+    height=5,
+    aspect=1.3)
+plt.title("GNI per Capita vs Life expectancy, male")
+plt.xlabel("GNI per Capita (USD)")
+plt.ylabel("Life Expectancy (Male, years)")
+plt.grid(True)
+plt.show()
 
 
