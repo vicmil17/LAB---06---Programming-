@@ -179,3 +179,168 @@ plt.show()
 
 #This part explores the relationship between a country's income level,
 #(GNI per capita) and life expectancy, with separate plots for men and women.
+
+#Part 5 ----------------------------------------------------
+#Use of pd.melt() to reshape the data for gender comparision side by side
+data_melted = pd.melt(data, 
+    id_vars=["Country Name", "Region", "GNI per capita", "High Income Economy" ,
+             "Physicians" , "Greenhouse gas emissions",
+             "Internet use","Population"],
+    value_vars=["Life expectancy, female", "Life expectancy, male"],
+    var_name="Gender", value_name="Life Expectancy")
+
+# simplified gender labels to make the graph cleaner  
+data_melted["Gender"] = data_melted["Gender"].str.replace("Life expectancy,","")
+#Part 5 ----------------------------------------------------
+#Use of pd.melt() to reshape the data for gender comparision side by side
+data_melted = pd.melt(data, 
+    id_vars=["Country Name", "Region", "GNI per capita", "High Income Economy" ,
+             "Physicians" , "Greenhouse gas emissions",
+             "Internet use","Population"],
+    value_vars=["Life expectancy, female", "Life expectancy, male"],
+    var_name="Gender", value_name="Life Expectancy")
+
+# simplified gender labels to make the graph cleaner  
+data_melted["Gender"] = data_melted["Gender"].str.replace("Life expectancy,","")
+
+# ----------------------------------------------------------
+#Question 1
+#Is life expectancy related to health expenditure?
+# ----------------------------------------------------------
+sns.relplot(
+    data = data_melted,
+    x="High Income Economy",
+    y="Life Expectancy",
+    col="Gender",
+    kind="scatter",
+    height=5,
+    aspect=1)
+plt.suptitle("Life Expectancy vs High Income Economy by Gender", y=1.05)
+plt.show()
+
+# ----------------------------------------------------------
+#Question 2 
+# Is life expenctancy related to the number of physicians? 
+# ----------------------------------------------------------
+sns.relplot(data=data_melted,
+    x="Physicians",
+    y="Life Expectancy",
+    col="Gender",
+    kind="scatter",
+    height=5,aspect=1)
+
+plt.suptitle("Life Expectancy vs Number of Physicians by Gender", y=1.05)
+plt.show()
+
+# ----------------------------------------------------------
+#Question 3
+#Does Interpret use influence life expenctancy?
+# ----------------------------------------------------------
+sns.relplot(
+    data = data_melted,
+    x="Internet use",
+    y="Life Expectancy",
+    col="Gender",
+    kind="scatter",
+    height=5,
+    aspect=1)
+plt.suptitle("Life Expectancy vs Internet USe by Gender", y=1.05)
+plt.show()
+
+# ----------------------------------------------------------
+#Question 4 
+#Does CO2 emissions affect life expectancy?
+# ----------------------------------------------------------
+sns.relplot(data = data_melted,
+    x="Greenhouse gas emissions",
+    y="Life Expectancy",
+    col="Gender",
+    kind="scatter",
+    height=5, aspect=1)
+
+plt.suptitle("Life Expectancy vs CO2 Emissions by Gender", y=1.05)
+plt.show()
+
+# ----------------------------------------------------------
+#Question 5
+#Is population size related to life expectancy?
+# ----------------------------------------------------------
+sns.relplot(data = data_melted,
+    x="Population",
+    y="Life Expectancy",
+    col="Gender",
+    kind="scatter",
+    height=5, aspect=1)
+
+plt.suptitle("Life Expectancy vs Population by Gender", y=1.05)
+plt.show()
+
+#This part analyzes how various social and health factors such as health expenditure,
+#number of physicians, and Internet use affect life expectancy across countries.
+
+# ----------------------------------------------------------
+#Part 6 
+#a) Is there any association between internet use and emissionsper capita ?
+# ----------------------------------------------------------
+#Use of lmplot() to check correlation between Internet use and Greenhouse gas emissions
+# ----------------------------------------------------------
+sns.lmplot(data = data,
+    x="Internet use",
+    y="Greenhouse gas emissions",
+    hue="Region",
+    height=5,
+    aspect=1.3,scatter_kws={"alpha":0.6}) #adds alinear regression line for trend visualization
+
+plt.title("Association between Internet Use and Greenhouse gas emissions per Capita")
+plt.xlabel("Internet Use (% of population)")
+plt.ylabel("Greenhouse gas emissions (metric tons per capita)")
+plt.grid(True)
+plt.show()
+
+# ----------------------------------------------------------
+#b) Which are the countries with higher emissions (> 0.03)?
+# ----------------------------------------------------------
+high_emissions = data[data["Greenhouse gas emissions"] > 0.03]
+print (high_emissions[["Country Name", "Region","Greenhouse gas emissions"]])
+print (high_emissions [["Country Name", "Region","Greenhouse gas emissions"]])
+
+# ----------------------------------------------------------
+#c) Is there much variation by region (high emissions vs Internet Use)?
+# ----------------------------------------------------------
+sns.relplot (data = data,
+             x="Internet use",
+             y="Greenhouse gas emissions",
+             hue ="Region",kind ="scatter", # visualizes how emissions vary across regions 
+             height = 5,
+             aspect = 1.3)
+
+plt.title("Internet use vs Greenhouse gas emissions by Region")
+plt.xlabel("Internet use (% of population)")
+plt.ylabel("Greenhouse gas emissions (metric tons per capita)")
+plt.grid(True)
+plt.show()
+
+sns.boxplot(
+    data=data,
+    x="Region",
+    y="Greenhouse gas emissions")
+plt.title("Variation of Greenhouse gas emissions by Region")
+plt.xticks(rotation=45)
+plt.show()
+
+# ----------------------------------------------------------
+#d) Do all high income economies have high emissions?
+# ----------------------------------------------------------
+sns.boxplot(data=data,
+    x="High Income Economy", y="Greenhouse gas emissions") # shows income-based difference in emissions
+plt.title("Greenhouse gas emissions in High vs Non-High Income Economies")
+plt.xlabel("High Income Economy (Yes/No)")
+plt.ylabel("Greenhouse gas emissions (metric tons per capita)")
+plt.show()
+
+print("Means Greenhouse gas emissions by income group:")
+print(data.groupby("High Income Economy")["Greenhouse gas emissions"].mean())
+
+#This section examines how Internet use related to Greenhouse gas emissions per capita.
+#It identifies high-emissions countries, comapre emissions by region and incomes,
+#and highlights global environmental and economic patterns.
